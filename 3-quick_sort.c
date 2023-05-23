@@ -2,6 +2,21 @@
 #include "sort.h"
 
 /**
+ * swap - swap the values ​​of a and b
+ * @b: int b
+ * @a: int a
+ * Return: void
+ */
+
+void swap(int *a, int *b)
+{
+	int temp = *a;
+
+	*a = *b;
+	*b = temp;
+}
+
+/**
  * partition - split an sort one element
  * @array: array with ramdom numbers
  * @low: strart partition
@@ -12,21 +27,16 @@
 int partition(int *array, int low, int high)
 {
 	int pivot = array[high];
-	int x, i = low - 1;
+	int j, i = low - 1;
 
-	for (int j = low; j <= high - 1; j++)
-	{
+	for (j = low; j <= high - 1; j++)
 		if (array[j] <= pivot)
 		{
 			i++;
-			x = array[i];
-			array[i] = array[j];
-			array[j] = x;
+			swap(&array[i], &array[j]);
+			break;
 		}
-	}
-	x = array[i + 1];
-	array[i + 1] = array[high];
-	array[high] = x;
+	swap(&array[i + 1], &array[high]);
 	return (i + 1);
 }
 
@@ -40,28 +50,23 @@ int partition(int *array, int low, int high)
 
 void quick_sort(int *array, size_t size)
 {
-	int stack[size];
-	int top = -1;
+	int low = 0, high = size - 1, pivot_index;
 
-	stack[++top] = 0;
-	stack[++top] = size - 1;
-
-	while (top >= 0)
+	while (low < high)
 	{
-		int high = stack[top--];
-		int low = stack[top--];
-		int pivot_index = partition(array, low, high);
+		pivot_index = partition(array, low, high);
 
-		if (pivot_index - 1 > low)
-		{
-			stack[++top] = low;
-			stack[++top] = pivot_index - 1;
-		}
-		if (pivot_index + 1 < high)
-		{
-			stack[++top] = pivot_index + 1;
-			stack[++top] = high;
-		}
 		print_array(array, size);
+
+		if (pivot_index - low < high - pivot_index)
+			if (low < pivot_index - 1)
+				high = pivot_index - 1;
+			else
+				low = pivot_index + 1;
+		else
+			if (pivot_index + 1 < high)
+				low = pivot_index + 1;
+			else
+				high = pivot_index - 1;
 	}
 }
