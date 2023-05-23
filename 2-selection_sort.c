@@ -2,6 +2,21 @@
 #include "sort.h"
 
 /**
+ * swap - swap the values ​​of a and b
+ * @b: int b
+ * @a: int a
+ * Return: void
+ */
+
+void swap(int *a, int *b)
+{
+	int temp = *a;
+
+	*a = *b;
+	*b = temp;
+}
+
+/**
  * selection_sort - sorts an array of integers in ascending order using
  * the Selection sort algorithm
  * @array: array with ramdom numbers
@@ -11,21 +26,20 @@
 
 void selection_sort(int *array, size_t size)
 {
-	size_t j, i;
-	int y, x;
+	size_t x, i, j;
 
-	for (i = 0; i < (size - 1); i++)
+	if (!array)
+		return;
+	for (i = 0; i < size - 1; i++)
 	{
-		x = array[i];
-		for (j = (i + 1); j < size; j++)
-			if (array[j] < x)
-			{
-				y = x;
-				x = array[j];
-				array[j] = y;
-			}
-		if (x != array[i])
-			array[i] = x;
-		print_array(array, size);
+		x = i;
+		for (j = i + 1; j < size; j++)
+			if (array[j] < array[x])
+				x = j;
+		if (x != i)
+		{
+			swap(&array[i], &array[x]);
+			print_array(array, size);
+		}
 	}
 }
