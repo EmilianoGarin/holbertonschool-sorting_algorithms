@@ -2,7 +2,7 @@
 #include "sort.h"
 
 /**
- * bubble_sort - sorts an array of integers in ascending order
+ * bubble_sort -  sorts an array of integers in ascending order
  * using the Bubble sort algorithm
  * @array: array with ramdom numbers
  * @size: size of array
