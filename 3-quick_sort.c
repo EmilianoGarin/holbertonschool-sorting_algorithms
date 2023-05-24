@@ -21,36 +21,53 @@ void swap(int *a, int *b)
  * @array: array with ramdom numbers
  * @low: strart partition
  * @high: finish partition
+ * @size: size of array
  * Return: partition
  */
 
-int partition(int *array, int low, int high, int* t_array, size_t size)
+int partition(int *array, int low, int high, size_t size)
 {
 	int pivot = array[high];
 	int j, i = low - 1;
 
 	for (j = low; j <= high - 1; j++)
-		if (array[j] <= pivot)
+		if (array[j] < pivot)
 		{
 			i++;
-			swap(&array[i], &array[j]);
-			print_array(t_array, size);
-			break;
+			if (i != j && i >= 0)
+			{
+				swap(&array[i], &array[j]);
+				print_array(array, size);
+			}
 		}
-	swap(&array[i + 1], &array[high]);
-	print_array(t_array, size);
+	if (array[i + 1] != array[high])
+	{
+		swap(&array[i + 1], &array[high]);
+		print_array(array, size);
+	}
 	return (i + 1);
 }
 
-void quick(int *array, size_t size, int* t_array, size_t t_size)
-{
-	if (size <= 1)
-		return;
+/**
+ * quick - orts an array of integers in ascending order using
+ * the Quick sort algorithm
+ * @array: array with ramdom numbers
+ * @low: low value of array
+ * @high: high value of array
+ * @size: size of array
+ * Return: void
+ */
 
-	int pivot_index = partition(array, 0, size - 1, t_array, t_size);
-	
-	quick(array, pivot_index, t_array, t_size);
-	quick(array + pivot_index + 1, size - pivot_index - 1, t_array, t_size);
+void quick(int *array, int low, int high, size_t size)
+{
+	int pivot_index;
+
+	if (high > low)
+	{
+	pivot_index = partition(array, low, high, size);
+	quick(array, low, pivot_index - 1, size);
+	quick(array, pivot_index + 1, high, size);
+	}
 }
 
 /**
@@ -63,5 +80,7 @@ void quick(int *array, size_t size, int* t_array, size_t t_size)
 
 void quick_sort(int *array, size_t size)
 {
-	quick(array, size, array, size);
+	int low = 0, high = size - 1;
+
+	quick(array, low, high, size);
 }
