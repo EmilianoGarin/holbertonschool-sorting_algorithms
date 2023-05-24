@@ -24,7 +24,7 @@ void swap(int *a, int *b)
  * Return: partition
  */
 
-int partition(int *array, int low, int high, size_t size)
+int partition(int *array, int low, int high, int* t_array, size_t size)
 {
 	int pivot = array[high];
 	int j, i = low - 1;
@@ -34,23 +34,23 @@ int partition(int *array, int low, int high, size_t size)
 		{
 			i++;
 			swap(&array[i], &array[j]);
-			print_array(array, size);
+			print_array(t_array, size);
 			break;
 		}
 	swap(&array[i + 1], &array[high]);
-	print_array(array, size);
+	print_array(t_array, size);
 	return (i + 1);
 }
 
-void quick(int *array, size_t size, size_t t_size)
+void quick(int *array, size_t size, int* t_array, size_t t_size)
 {
 	if (size <= 1)
-        return;
+		return;
 
-    int pivot_index = partition(array, 0, size - 1, t_size);
-    
-    quick_sort(array, pivot_index);
-    quick_sort(array + pivot_index + 1, size - pivot_index - 1);
+	int pivot_index = partition(array, 0, size - 1, t_array, t_size);
+	
+	quick(array, pivot_index, t_array, t_size);
+	quick(array + pivot_index + 1, size - pivot_index - 1, t_array, t_size);
 }
 
 /**
@@ -63,5 +63,5 @@ void quick(int *array, size_t size, size_t t_size)
 
 void quick_sort(int *array, size_t size)
 {
-	quick(array, size, size);
+	quick(array, size, array, size);
 }
